@@ -248,3 +248,15 @@ cidade e país automaticamente.
 
 - **Back-end (API):** https://github.com/PietroVP0777/orbitguard
 - **Repositório deste app:** https://github.com/MikaelDv/orbit-guard
+
+---
+
+## 👥 Integrantes do Grupo
+
+| Nome | RM |
+|------|------|
+| Pietro Vitor Pezzente | RM557283 |
+| Eric Darakjian | RM557082 |
+| Luciano Henrique Meriato Júnior | RM554546 |
+| Kauã Soares Guimarães | RM559044 |
+| Enzo Mikael Sanches | RM558887 |
