@@ -230,15 +230,21 @@ anel azul para identificá-lo). Essa junção é feita em `src/services/focosSer
 
 ## 🎥 Evidências de execução
 
-> Adicione aqui o **vídeo curto** demonstrando o app funcionando (registro de ocorrência
-> com GPS, listagem de focos e histórico) e/ou capturas de tela das telas principais.
+Vídeo curto demonstrando o app funcionando (listagem de focos no mapa, detalhes,
+registro de ocorrência com GPS e histórico):
 
-- 📹 Vídeo: _(link aqui)_
-- 🖼️ Screenshots: _(adicionar em `assets/` ou em uma pasta `docs/`)_
+- 📹 **Vídeo:** https://youtube.com/shorts/2WO0HgDpgHs
+
+### Recurso mobile demonstrado no vídeo
+
+O **GPS/localização** (`expo-location`): na tela de registro de ocorrência, o app
+solicita a permissão de localização, captura as coordenadas reais do dispositivo,
+exibe a posição em um mini-mapa e faz a geocodificação reversa para preencher
+cidade e país automaticamente.
 
 ---
 
 ## 🔗 Projeto relacionado
 
 - **Back-end (API):** https://github.com/PietroVP0777/orbitguard
-- **Repositório deste app:** _(adicione o link do seu repositório git aqui)_
+- **Repositório deste app:** https://github.com/MikaelDv/orbit-guard
