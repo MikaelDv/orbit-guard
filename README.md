@@ -54,6 +54,20 @@ Início (panorama)
 
 ---
 
+## 🗺️ Mapas
+
+- **Listagem de focos:** mapa em formato circular (estilo "globo"), com a borda
+  nas cores do app e **pins coloridos por nível de perigo**. Tocar em um pin abre
+  os detalhes do foco. Focos cadastrados pelo usuário ganham um anel azul para se
+  destacarem dos demais.
+- **Registro de ocorrência:** mini-mapa circular que mostra a posição capturada
+  pelo GPS antes de salvar.
+
+No iPhone o mapa usa o **Apple Maps** (sem necessidade de chave); no Android usa o
+Google Maps. Implementado em `src/components/FocosMap.js` e `LocalMiniMap.js`.
+
+---
+
 ## 📲 Recurso mobile utilizado: **GPS / Localização**
 
 O recurso nativo central é o **GPS**, via [`expo-location`](https://docs.expo.dev/versions/latest/sdk/location/).
@@ -160,11 +174,55 @@ A URL base fica em `src/services/config.js`. Ajuste conforme o ambiente:
 
 ---
 
+## 🔌 Rodando com o back-end OrbitGuard ativo
+
+O back-end é o repositório [PietroVP0777/orbitguard](https://github.com/PietroVP0777/orbitguard)
+(Java 21 + Spring Boot + PostgreSQL).
+
+### 1. Subir a API
+
+```bash
+git clone https://github.com/PietroVP0777/orbitguard.git
+cd orbitguard
+```
+
+Edite `src/main/resources/application.properties` com seu PostgreSQL e as chaves
+das APIs externas (NASA FIRMS / OpenWeather), depois rode:
+
+```bash
+./mvnw spring-boot:run      # ou: mvn spring-boot:run
+```
+
+A API sobe em `http://localhost:8080` (Swagger em `http://localhost:8080/docs`).
+
+### 2. Apontar o app para a API
+
+Como você testa em um **iPhone físico**, `localhost` se refere ao próprio celular,
+não ao PC. Use o **IP da sua máquina na rede**:
+
+1. Descubra o IP do PC: `ipconfig` (Windows) → "Endereço IPv4", ex.: `192.168.15.193`.
+2. Em `src/services/config.js`, ajuste:
+   ```js
+   export const API_BASE_URL = 'http://192.168.15.193:8080';
+   ```
+3. Garanta que iPhone e PC estão na **mesma rede Wi-Fi**.
+
+### 3. Ver o seu foco junto aos do exemplo
+
+A API OrbitGuard só **lê** focos (NASA FIRMS) — ela não tem endpoint para criar
+focos novos. Por isso, as ocorrências que **você cadastra ficam salvas no aparelho**
+(AsyncStorage) e o app as **mescla** com os focos vindos da API. Resultado: na
+listagem e no mapa, o foco que você adicionou aparece **junto aos demais** (com um
+anel azul para identificá-lo). Essa junção é feita em `src/services/focosService.js`.
+
+---
+
 ## 🛠️ Tecnologias
 
-- **React Native** + **Expo (SDK 56)**
+- **React Native** + **Expo (SDK 54)**
 - **React Navigation** (abas + pilha nativa)
 - **expo-location** (GPS / geocodificação)
+- **react-native-maps** (mapa com pins dos focos — globo na listagem e mini-mapa no registro)
 - **@react-native-async-storage/async-storage** (persistência local)
 - **@expo/vector-icons** (ícones)
 

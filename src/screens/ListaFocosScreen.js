@@ -5,12 +5,13 @@ import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity } from 'r
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
-import { listarFocos, buscarFocosPorPais } from '../services/api';
+import { carregarFocos } from '../services/focosService';
 import FocoCard from '../components/FocoCard';
+import FocosMap from '../components/FocosMap';
 import Loading from '../components/Loading';
 import EmptyState from '../components/EmptyState';
 import Banner from '../components/Banner';
-import { colors, radius, spacing } from '../theme';
+import { colors, radius, spacing, corDoPerigo } from '../theme';
 
 export default function ListaFocosScreen({ navigation }) {
   const [focos, setFocos] = useState([]);
@@ -21,9 +22,7 @@ export default function ListaFocosScreen({ navigation }) {
 
   const carregar = useCallback(async (paisFiltro) => {
     setAviso(null);
-    const resultado = paisFiltro
-      ? await buscarFocosPorPais(paisFiltro)
-      : await listarFocos();
+    const resultado = await carregarFocos(paisFiltro);
     setFocos(resultado.dados);
     if (resultado.erro) setAviso(resultado.erro);
     else if (resultado.origem === 'mock') setAviso('Exibindo dados simulados (API offline).');
@@ -96,6 +95,20 @@ export default function ListaFocosScreen({ navigation }) {
           ListHeaderComponent={
             <>
               {!!aviso && <Banner variante="alerta" mensagem={aviso} />}
+              {focos.length > 0 && (
+                <>
+                  <FocosMap
+                    focos={focos}
+                    onSelecionar={(foco) => navigation.navigate('DetalhesFoco', { foco })}
+                  />
+                  <View style={styles.legenda}>
+                    <LegendaItem cor={corDoPerigo('EXTREMO')} texto="Extremo" />
+                    <LegendaItem cor={corDoPerigo('MÉDIO')} texto="Médio" />
+                    <LegendaItem cor={corDoPerigo('BAIXO')} texto="Baixo" />
+                    <LegendaItem cor={colors.accent} texto="Minha ocorrência" anel />
+                  </View>
+                </>
+              )}
               <Text style={styles.contador}>
                 {focos.length} foco(s) encontrado(s)
               </Text>
@@ -124,8 +137,33 @@ export default function ListaFocosScreen({ navigation }) {
   );
 }
 
+function LegendaItem({ cor, texto, anel }) {
+  return (
+    <View style={styles.legendaItem}>
+      <View
+        style={[
+          styles.legendaDot,
+          { backgroundColor: cor },
+          anel && { borderWidth: 2, borderColor: colors.white },
+        ]}
+      />
+      <Text style={styles.legendaTxt}>{texto}</Text>
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background },
+  legenda: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    marginBottom: spacing.md,
+    gap: spacing.md,
+  },
+  legendaItem: { flexDirection: 'row', alignItems: 'center' },
+  legendaDot: { width: 12, height: 12, borderRadius: 6, marginRight: 5 },
+  legendaTxt: { color: colors.textMuted, fontSize: 12 },
   buscaContainer: {
     flexDirection: 'row',
     alignItems: 'center',

@@ -37,30 +37,49 @@ export default function DetalhesFocoScreen({ route }) {
         <DangerBadge nivel={foco.nivelPerigo} />
       </View>
 
+      {foco.origemRegistro === 'local' && (
+        <View style={[styles.nota, { borderColor: colors.accent, backgroundColor: colors.accent + '14', marginTop: 0, marginBottom: spacing.md }]}>
+          <Ionicons name="person-circle" size={18} color={colors.accent} />
+          <Text style={[styles.notaTexto, { color: colors.accent }]}>
+            Ocorrência registrada por você. Dados climáticos não se aplicam a registros manuais.
+          </Text>
+        </View>
+      )}
+
+      {!!foco.descricao && (
+        <Secao titulo="Descrição">
+          <Text style={styles.descricao}>{foco.descricao}</Text>
+        </Secao>
+      )}
+
       <Secao titulo="Localização">
         <Linha icon="navigate" rotulo="Coordenadas" valor={coordenadas(foco.latitude, foco.longitude)} />
         <Linha icon="calendar" rotulo="Data de detecção" valor={dataBr(foco.data)} />
       </Secao>
 
-      <Secao titulo="Intensidade do fogo">
-        <Linha icon="flame" rotulo="Poder radiativo (FRP)" valor={num(foco.poderRadiativoFogo, 1, ' MW')} />
-      </Secao>
+      {foco.origemRegistro !== 'local' && (
+        <>
+          <Secao titulo="Intensidade do fogo">
+            <Linha icon="flame" rotulo="Poder radiativo (FRP)" valor={num(foco.poderRadiativoFogo, 1, ' MW')} />
+          </Secao>
 
-      <Secao titulo="Condições climáticas">
-        <Linha icon="thermometer" rotulo="Temperatura" valor={num(foco.temperaturaCelsius, 1, ' °C')} />
-        <Linha icon="water" rotulo="Umidade" valor={num(foco.umidade, 0, ' %')} />
-        <Linha icon="cloud" rotulo="Nuvens" valor={num(foco.nuvens, 0, ' %')} />
-        <Linha icon="speedometer" rotulo="Vento" valor={num(foco.velocidadeVento, 1, ' m/s')} />
-        <Linha icon="flag" rotulo="Rajadas de vento" valor={num(foco.rajadasVento, 1, ' m/s')} />
-      </Secao>
+          <Secao titulo="Condições climáticas">
+            <Linha icon="thermometer" rotulo="Temperatura" valor={num(foco.temperaturaCelsius, 1, ' °C')} />
+            <Linha icon="water" rotulo="Umidade" valor={num(foco.umidade, 0, ' %')} />
+            <Linha icon="cloud" rotulo="Nuvens" valor={num(foco.nuvens, 0, ' %')} />
+            <Linha icon="speedometer" rotulo="Vento" valor={num(foco.velocidadeVento, 1, ' m/s')} />
+            <Linha icon="flag" rotulo="Rajadas de vento" valor={num(foco.rajadasVento, 1, ' m/s')} />
+          </Secao>
 
-      <View style={[styles.nota, { borderColor: cor, backgroundColor: cor + '14' }]}>
-        <Ionicons name="information-circle" size={18} color={cor} />
-        <Text style={[styles.notaTexto, { color: cor }]}>
-          O nível de perigo é calculado pelo OrbitGuard combinando poder radiativo, temperatura,
-          umidade, nuvens e vento.
-        </Text>
-      </View>
+          <View style={[styles.nota, { borderColor: cor, backgroundColor: cor + '14' }]}>
+            <Ionicons name="information-circle" size={18} color={cor} />
+            <Text style={[styles.notaTexto, { color: cor }]}>
+              O nível de perigo é calculado pelo OrbitGuard combinando poder radiativo, temperatura,
+              umidade, nuvens e vento.
+            </Text>
+          </View>
+        </>
+      )}
     </ScrollView>
   );
 }
@@ -102,6 +121,7 @@ const styles = StyleSheet.create({
   secao: { marginBottom: spacing.md },
   secaoTitulo: { color: colors.textMuted, fontSize: 13, fontWeight: '700', textTransform: 'uppercase', marginBottom: spacing.sm, letterSpacing: 0.5 },
   secaoCorpo: { backgroundColor: colors.surface, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, paddingHorizontal: spacing.md },
+  descricao: { color: colors.text, fontSize: 14, lineHeight: 20, paddingVertical: spacing.md },
   linha: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 12, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.border },
   linhaEsq: { flexDirection: 'row', alignItems: 'center' },
   linhaRotulo: { color: colors.text, fontSize: 14, marginLeft: spacing.sm },

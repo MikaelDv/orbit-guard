@@ -8,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import InputField from '../components/InputField';
 import PrimaryButton from '../components/PrimaryButton';
 import Banner from '../components/Banner';
+import LocalMiniMap from '../components/LocalMiniMap';
 import { obterLocalizacaoAtual } from '../services/location';
 import { salvarOcorrencia } from '../services/storage';
 import { validarOcorrencia, NIVEIS_VALIDOS } from '../utils/validation';
@@ -96,7 +97,10 @@ export default function RegistrarOcorrenciaScreen({ navigation }) {
           </Text>
         </View>
         {temCoords ? (
-          <Text style={styles.gpsCoords}>{coordenadas(form.coords.latitude, form.coords.longitude)}</Text>
+          <>
+            <Text style={styles.gpsCoords}>{coordenadas(form.coords.latitude, form.coords.longitude)}</Text>
+            <LocalMiniMap latitude={form.coords.latitude} longitude={form.coords.longitude} />
+          </>
         ) : (
           <Text style={styles.gpsHint}>Toque no botão para usar sua posição atual.</Text>
         )}
