@@ -3,10 +3,10 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
-import { colors } from '../theme';
+import { colors, radius } from '../theme';
 import { darkMapStyle } from '../theme/mapStyle';
 
-const TAMANHO = 160;
+const ALTURA = 150;
 
 export default function LocalMiniMap({ latitude, longitude }) {
   if (typeof latitude !== 'number' || typeof longitude !== 'number') return null;
@@ -20,7 +20,7 @@ export default function LocalMiniMap({ latitude, longitude }) {
 
   return (
     <View style={styles.wrapper}>
-      <View style={styles.anel}>
+      <View style={styles.moldura}>
         <MapView
           style={styles.map}
           region={regiao}
@@ -44,13 +44,13 @@ export default function LocalMiniMap({ latitude, longitude }) {
 }
 
 const styles = StyleSheet.create({
-  wrapper: { alignItems: 'center', marginTop: 12 },
-  anel: {
-    width: TAMANHO,
-    height: TAMANHO,
-    borderRadius: TAMANHO / 2,
+  wrapper: { marginTop: 12 },
+  moldura: {
+    width: '100%',
+    height: ALTURA,
+    borderRadius: radius.md,
     overflow: 'hidden',
-    borderWidth: 3,
+    borderWidth: 1,
     borderColor: colors.success,
     backgroundColor: colors.surface,
   },

@@ -5,11 +5,11 @@ import React, { useRef, useEffect, useState } from 'react';
 import { View, StyleSheet, Dimensions, Platform } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
-import { colors, corDoPerigo } from '../theme';
+import { colors, corDoPerigo, radius } from '../theme';
 import { darkMapStyle } from '../theme/mapStyle';
 
 const LARGURA = Dimensions.get('window').width - 32;
-const TAMANHO = Math.min(LARGURA, 340); // mantém o mapa quadrado p/ virar círculo
+const ALTURA = 220; // mapa retangular ocupando a largura da tela
 
 // Região inicial ampla, dando a sensação de "globo".
 const REGIAO_MUNDO = {
@@ -53,7 +53,7 @@ export default function FocosMap({ focos = [], onSelecionar }) {
 
   return (
     <View style={styles.wrapper}>
-      <View style={styles.anel}>
+      <View style={styles.moldura}>
         <MapView
           ref={mapRef}
           style={styles.map}
@@ -95,22 +95,22 @@ export default function FocosMap({ focos = [], onSelecionar }) {
 
 const styles = StyleSheet.create({
   wrapper: { alignItems: 'center', marginVertical: 8 },
-  anel: {
-    width: TAMANHO,
-    height: TAMANHO,
-    borderRadius: TAMANHO / 2,
+  moldura: {
+    width: LARGURA,
+    height: ALTURA,
+    borderRadius: radius.lg,
     overflow: 'hidden',
-    borderWidth: 3,
-    borderColor: colors.primary,
+    borderWidth: 1,
+    borderColor: colors.border,
     backgroundColor: colors.surface,
     ...Platform.select({
       ios: {
-        shadowColor: colors.primary,
-        shadowOpacity: 0.4,
-        shadowRadius: 12,
-        shadowOffset: { width: 0, height: 0 },
+        shadowColor: '#000',
+        shadowOpacity: 0.3,
+        shadowRadius: 10,
+        shadowOffset: { width: 0, height: 4 },
       },
-      android: { elevation: 8 },
+      android: { elevation: 6 },
     }),
   },
   map: { width: '100%', height: '100%' },

@@ -13,7 +13,8 @@
 // Caso a API esteja indisponível, o app usa dados simulados (mock) como
 // fallback, garantindo que a experiência continue funcional para demonstração.
 
-export const API_BASE_URL = 'http://10.0.2.2:8080';
+// IP da máquina onde a API OrbitGuard está rodando (mesma rede Wi-Fi do iPhone).
+export const API_BASE_URL = 'http://192.168.15.193:8080';
 
 // Tempo máximo (ms) de espera por uma resposta da API antes de assumir falha.
 export const API_TIMEOUT = 6000;
